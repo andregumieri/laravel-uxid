@@ -2,10 +2,20 @@
 
 namespace AndreGumieri\LaravelUxid\Database\Eloquent\Concerns;
 
-use Illuminate\Support\Str;
+use AndreGumieri\LaravelUxid\Services\UxidService;
 
 trait HasUxid
 {
+    /**
+     * Initialize the trait.
+     *
+     * @return void
+     */
+    public function initializeHasUxid()
+    {
+        $this->usesUniqueIds = true;
+    }
+
     /**
      * Get the columns that should receive a unique identifier.
      *
@@ -23,21 +33,7 @@ trait HasUxid
      */
     public function newUniqueId()
     {
-        $base58chars = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-        $data = random_bytes(16);
-        $hex = bin2hex($data);
-        // Convert UUID to base10
-        $base10 = base_convert($hex, 16, 10);
-
-        // Convert base10 to base58
-        $base58 = '';
-        while (bccomp($base10, '0') > 0) {
-            $digit = bcmod($base10, '58');
-            $base58 = $base58chars[$digit] . $base58;
-            $base10 = bcdiv(bcsub($base10, $digit), '58');
-        }
-
-        return $base58;
+        return UxidService::uxid($this->uniqueIdEntropy(), $this->uniqueIdPrefix());
     }
 
     /**
@@ -68,9 +64,25 @@ trait HasUxid
         return $this->incrementing;
     }
 
+    /**
+     * Get the entropy of the unique ID.
+     *
+     * @return int The entropy value.
+     */
     public function uniqueIdEntropy(): int
     {
         return 16;
+    }
+
+    /**
+     * Returns the unique ID prefix for the given table.
+     *
+     * @return string|null The unique ID prefix for the table, or null if it fails to generate the prefix
+     */
+    public function uniqueIdPrefix(): ?string
+    {
+        $table = $this->getTable();
+        return UxidService::prefixGenerator($table);
     }
 
 }
