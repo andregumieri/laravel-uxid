@@ -3,6 +3,7 @@
 namespace AndreGumieri\LaravelUxid\Services;
 
 use Hidehalo\Nanoid\Client;
+use Illuminate\Support\Str;
 
 class UxidService
 {
@@ -33,10 +34,15 @@ class UxidService
      * @param string $table The table name
      * @return string The generated prefix
      */
-    public static function prefixGenerator($table): string
+    public static function prefixGenerator($table, bool $asSingular = true): string
     {
         $words = explode('_', $table);
         $prefix = '';
+
+        if ($asSingular) {
+            $words[count($words) - 1] = Str::singular($words[count($words) - 1]);
+        }
+
 
         if (strlen($table) <= 3){
             $prefix = $table;
