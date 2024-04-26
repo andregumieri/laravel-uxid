@@ -1,15 +1,18 @@
 {
-  "name": "andregumieri/laravel-uxid",
-  "type": "library",
-  "autoload": {
-    "psr-4": {
-      "AndreGumieri\\LaravelUxid\\": "src/"
+    "name": "andregumieri/laravel-uxid",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "AndreGumieri\\LaravelUxid\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Andre Gumieri de Freitas",
+            "email": "andregumieri@gmail.com"
+        }
+    ],
+    "require": {
+        "hidehalo/nanoid-php": "^1.1"
     }
-  },
-  "authors": [
-    {
-      "name": "Andre Gumieri de Freitas",
-      "email": "andregumieri@gmail.com"
-    }
-  ]
 }
