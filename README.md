@@ -1,7 +1,15 @@
 # Laravel UXID
 
 ## Migrations
-Instead of using `$table->id()` use `$table->string('id')->primary()`
+### UXID
+Instead of using `$table->id()` use `$table->uxid()` (short for `$table->string('id')->primary`)
+
+### Foreign
+```
+    ...
+    $table->foreignUxidFor(ModelWithUxid::class)
+    ...
+```
 
 ## Models
 ```php
