@@ -33,7 +33,7 @@ trait HasUxid
      */
     public function newUniqueId()
     {
-        return UxidService::uxid($this->uniqueIdEntropy(), $this->uniqueIdPrefix());
+        return UxidService::uxid($this->uniqueIdEntropy(), $this->uniqueIdPrefix(), $this->uniqueIdCharList());
     }
 
     /**
@@ -71,7 +71,7 @@ trait HasUxid
      */
     public function uniqueIdEntropy(): int
     {
-        return 16;
+        return config('uxid.entropy');
     }
 
     /**
@@ -83,6 +83,16 @@ trait HasUxid
     {
         $table = $this->getTable();
         return UxidService::prefixGenerator($table);
+    }
+
+    /**
+     * Returns the character list used for generating the unique ID.
+     *
+     * @return string|null The character list used for generating the unique ID, or null to use the default character set.
+     */
+    public function uniqueIdCharList(): ?string
+    {
+        return config('uxid.char_list');
     }
 
 }
