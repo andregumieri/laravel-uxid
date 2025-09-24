@@ -12,12 +12,13 @@ class UxidService
      *
      * @param int $entropy The number of random bytes to use for entropy (optional, default is 16).
      * @param string|null $prefix The optional prefix to be added to the identifier (default is null).
+     * @param string|null $charList The optional character list to use for generating the ID (default is null, which uses all alphabet + numbers).
      * @return string The generated unique identifier.
      */
-    public static function uxid($entropy=16, $prefix=null): string
+    public static function uxid($entropy=16, $prefix=null, $charList=null): string
     {
         $client = new Client();
-        $base58chars = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+        $base58chars = $charList ?? "0123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
         $base58 = $client->formattedId($base58chars, $entropy);
 
         if($prefix) {
